@@ -73,7 +73,7 @@ async function attachMenus(db: DB, instId: string, rows: Record<string, unknown>
 export const getDayMeals = cache(async (db: DB, inst: Institution, date: string): Promise<DayMeal[]> => {
   await db.rpc("ensure_meals", { inst: inst.id, p_date: date });
   const { data, error } = await db.from("meals").select(MEAL_SELECT).eq("institution_id", inst.id).eq("meal_date", date);
-  if (error) throw new Error(error.message);
+  if (error) console.error("[meals]", error.message);
   return attachMenus(db, inst.id, data ?? []);
 });
 
@@ -91,7 +91,7 @@ export async function getMealsInRange(db: DB, inst: Institution, from: string, d
     .eq("institution_id", inst.id)
     .gte("meal_date", dates[0])
     .lte("meal_date", dates[dates.length - 1]);
-  if (error) throw new Error(error.message);
+  if (error) console.error("[meals]", error.message);
   return attachMenus(db, inst.id, data ?? []);
 }
 
@@ -217,7 +217,7 @@ export async function resolveMealSelection(
 
 export async function getMealTotals(db: DB, from: string, to: string, instId?: string) {
   const { data, error } = await db.rpc("meal_totals", { p_from: from, p_to: to, p_inst: instId ?? null });
-  if (error) throw new Error(error.message);
+  if (error) console.error("[meals]", error.message);
   return (data ?? []) as Array<{
     institution_id: string;
     meal_id: string;

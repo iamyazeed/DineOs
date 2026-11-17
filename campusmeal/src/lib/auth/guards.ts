@@ -4,7 +4,9 @@ import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { can, type Permission } from "@/lib/auth/permissions";
-import { DEMO_COOKIE, DEMO_INSTITUTION, readDemoToken } from "@/lib/auth/demo";
+import { createClient as createSupabaseClient } from "@supabase/supabase-js";
+import { supabaseEnv } from "@/config/env";
+import { DEMO_COOKIE, DEMO_INSTITUTION, demoAccessToken, findDemoUser, readDemoToken } from "@/lib/auth/demo";
 import type { Institution, Role } from "@/types/domain";
 
 export interface Membership {
@@ -28,9 +30,21 @@ export interface RoleContext extends SessionContext {
   supabase: Db;
 }
 
-/** Demo sessions have no Supabase Auth user, so they read with the service-role client when it exists. */
+/**
+ * Demo sessions have no Supabase Auth user. Best: a token signed for the demo user
+ * (needs SUPABASE_JWT_SECRET) so RLS applies as usual. Else the service-role client.
+ */
 async function dbFor(session: SessionContext): Promise<Db> {
   if (session.isDemo) {
+    const user = findDemoUser(session.email);
+    const token = user ? await demoAccessToken(user) : null;
+    if (token) {
+      const { url, anonKey } = supabaseEnv();
+      return createSupabaseClient(url, anonKey, {
+        global: { headers: { Authorization: `Bearer ${token}` } },
+        auth: { persistSession: false, autoRefreshToken: false },
+      }) as unknown as Db;
+    }
     const admin = createAdminClient();
     if (admin) return admin as unknown as Db;
   }

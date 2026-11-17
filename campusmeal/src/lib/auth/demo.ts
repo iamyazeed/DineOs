@@ -71,6 +71,20 @@ async function sign(payload: string) {
   return b64url(new Uint8Array(await crypto.subtle.sign("HMAC", key, new TextEncoder().encode(payload))));
 }
 
+/**
+ * A Supabase access token for a demo user, signed with the project's JWT secret,
+ * so RLS and auth.uid() treat the demo user like a normal sign-in. Null if no secret is set.
+ */
+export async function demoAccessToken(user: DemoUser): Promise<string | null> {
+  const jwtSecret = process.env.SUPABASE_JWT_SECRET;
+  if (!jwtSecret) return null;
+  const enc = (o: object) => b64url(new TextEncoder().encode(JSON.stringify(o)));
+  const now = Math.floor(Date.now() / 1000);
+  const body = `${enc({ alg: "HS256", typ: "JWT" })}.${enc({ sub: user.userId, email: user.email, role: "authenticated", aud: "authenticated", iat: now, exp: now + 3600 })}`;
+  const key = await crypto.subtle.importKey("raw", new TextEncoder().encode(jwtSecret), { name: "HMAC", hash: "SHA-256" }, false, ["sign"]);
+  return `${body}.${b64url(new Uint8Array(await crypto.subtle.sign("HMAC", key, new TextEncoder().encode(body))))}`;
+}
+
 /** Cookie value for a demo user: "<identifier>.<signature>". */
 export async function demoToken(identifier: string) {
   const id = identifier.trim().toLowerCase().replace(/\.demo$/, "");
