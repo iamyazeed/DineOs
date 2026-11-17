@@ -1,3 +1,4 @@
+import { Paperclip } from "lucide-react";
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { sendInstitutionalMessage } from "@/features/communication/actions";
 import { ActionForm, SubmitButton } from "@/components/forms/action-form";
@@ -40,7 +41,7 @@ export async function Conversation({ db, instId, as }: { db: SupabaseClient; ins
               <p className="whitespace-pre-line">{m.body}</p>
               {(docsByMsg.get(m.id) ?? []).map((d) => (
                 <a key={d.id} href={urlOf.get(d.storage_path) ?? "#"} target="_blank" rel="noopener noreferrer" className="btn btn-ghost btn-sm mt-2">
-                  📎 {d.file_name} {d.size_bytes ? `(${Math.ceil(d.size_bytes / 1024)} KB)` : ""}
+                  <Paperclip size={14} aria-hidden className="inline align-[-2px]" /> {d.file_name} {d.size_bytes ? `(${Math.ceil(d.size_bytes / 1024)} KB)` : ""}
                 </a>
               ))}
             </div>

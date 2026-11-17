@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { ArrowLeft } from "lucide-react";
 import { requireRole } from "@/lib/auth/guards";
 import { getCampusStructure } from "@/features/meals/queries";
 import { assignTable } from "@/features/campus-configuration/actions";
@@ -32,7 +33,7 @@ export default async function SeatAssignments() {
         eyebrow="Configuration"
         title="Seat assignments"
         sub="Fixed table assignments carry over every day. Moving a student ends the old assignment and keeps it in history."
-        actions={<Link href="/admin/dining/halls" className="btn btn-ghost">← Halls & tables</Link>}
+        actions={<Link href="/admin/dining/halls" className="btn btn-ghost"><ArrowLeft size={16} aria-hidden /> Halls & tables</Link>}
       />
       <div className="mt-5" />
       <div className="cols">

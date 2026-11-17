@@ -1,8 +1,12 @@
 import Link from "next/link";
+import { ArrowRight } from "lucide-react";
 import { requireRole } from "@/lib/auth/guards";
 import { getCampusStructure } from "@/features/meals/queries";
-import { createAccount, createStudent, setStudentActive } from "@/features/campus-configuration/actions";
+import { createStudent, setStudentActive } from "@/features/campus-configuration/actions";
+import { bulkCreateStudents, createStudentLogin } from "@/features/people/actions";
 import { ActionForm, SubmitButton } from "@/components/forms/action-form";
+import { BulkImport } from "@/components/forms/bulk-import";
+import { numberedName, studentLoginId } from "@/lib/utils/login-id";
 import { EmptyState, Field, PageHeader, Panel, Pill } from "@/components/ui/primitives";
 import { cn } from "@/lib/utils";
 import type { PageProps } from "@/types/page";
@@ -16,7 +20,7 @@ export default async function StudentsPage({ searchParams }: PageProps) {
   const classFilter = typeof sp.class === "string" ? sp.class : structure.classes[0]?.id;
   const q = typeof sp.q === "string" ? sp.q.trim().toLowerCase() : "";
   const [{ data: rows }, { data: tables }, { data: linked }] = await Promise.all([
-    db.from("students").select("id, full_name, roll_no, class_id, dietary_notes, active, profile_id").eq("institution_id", inst.id).range(0, 9999),
+    db.from("students").select("id, full_name, roll_no, admission_no, class_id, dietary_notes, active, profile_id").eq("institution_id", inst.id).range(0, 9999),
     db.from("dining_tables").select("id, code").eq("institution_id", inst.id).eq("active", true).order("code"),
     db.from("students").select("id").eq("institution_id", inst.id).not("profile_id", "is", null),
   ]);
@@ -32,7 +36,7 @@ export default async function StudentsPage({ searchParams }: PageProps) {
         eyebrow="People"
         title="Students & teachers"
         sub={`${(rows ?? []).filter((s) => s.active).length} active students · ${(linked ?? []).length} with student logins`}
-        actions={<Link href="/admin/teachers" className="btn btn-ghost">Teachers & staff →</Link>}
+        actions={<Link href="/admin/teachers" className="btn btn-ghost">Teachers & staff <ArrowRight size={16} aria-hidden /></Link>}
       />
       <div className="my-5 flex flex-wrap items-center gap-3">
         <div className="seg">
@@ -57,6 +61,7 @@ export default async function StudentsPage({ searchParams }: PageProps) {
                 <tr>
                   <th className="num">Roll</th>
                   <th>Name</th>
+                  <th>Student ID</th>
                   <th>Table</th>
                   <th>Dietary notes</th>
                   <th>Status</th>
@@ -67,8 +72,10 @@ export default async function StudentsPage({ searchParams }: PageProps) {
                 {list.map((s) => (
                   <tr key={s.id}>
                     <td className="num">{s.roll_no}</td>
-                    <td className="font-semibold">
-                      {s.full_name} {s.profile_id && <Pill tone="teal">login</Pill>}
+                    <td className="font-semibold">{numberedName(s.full_name, s.admission_no)}</td>
+                    <td className="mono text-[12.5px]">
+                      {s.admission_no ? studentLoginId(inst.code, s.admission_no) : "—"}{" "}
+                      {s.profile_id ? <Pill tone="teal">login</Pill> : <span className="text-faint">no login</span>}
                     </td>
                     <td className="mono">{seatOf.get(s.id) ?? <span className="text-bad">Unseated</span>}</td>
                     <td className="text-[12.5px] text-dim">{s.dietary_notes ?? "—"}</td>
@@ -127,35 +134,51 @@ export default async function StudentsPage({ searchParams }: PageProps) {
             </div>
           </ActionForm>
         </Panel>
-        <Panel title="Create a student login" sub="Lets the student view menus, cancel meals and see their table">
-          <ActionForm action={createAccount} resetOnSuccess>
-            <input type="hidden" name="role" value="student" />
-            <Field label="Student record">
+        <Panel title="Create a student login" sub="Students sign in with their student ID and this password">
+          <ActionForm action={createStudentLogin} resetOnSuccess>
+            <Field label="Student">
               <select name="student_id" required>
                 {studentsWithoutLogin.map((s) => (
                   <option key={s.id} value={s.id}>
-                    {s.full_name} (roll {s.roll_no})
+                    {numberedName(s.full_name, s.admission_no)}
+                    {s.admission_no ? ` · ${studentLoginId(inst.code, s.admission_no)}` : ""}
                   </option>
                 ))}
               </select>
             </Field>
-            <div className="form-grid">
-              <Field label="Display name">
-                <input name="full_name" required maxLength={120} />
-              </Field>
-              <Field label="Email">
-                <input name="email" type="email" required />
-              </Field>
-              <Field label="Temporary password">
-                <input name="password" type="password" minLength={8} required autoComplete="new-password" />
-              </Field>
-            </div>
+            <Field label="Starting password">
+              <input name="password" type="password" minLength={6} required autoComplete="new-password" />
+            </Field>
             <div>
               <SubmitButton variant="ghost">Create login</SubmitButton>
             </div>
           </ActionForm>
         </Panel>
       </div>
+      <Panel title="Add students in bulk" sub="Paste rows from a spreadsheet or upload a CSV. Student IDs are given out automatically.">
+        <BulkImport
+          action={bulkCreateStudents}
+          fileName="students.csv"
+          submitLabel="Add students"
+          sample={"name,class,roll,table,dietary\nAbu,S1,1,A1,\nMalik,S1,2,A1,Vegetarian\nNizam,S2,,,"}
+          columns={[
+            { key: "name", label: "Name", required: true, aliases: ["full name", "student"] },
+            { key: "class", label: "Class", required: true, aliases: ["class name"] },
+            { key: "roll", label: "Roll", aliases: ["roll no", "roll number"] },
+            { key: "table", label: "Table", aliases: ["table code", "seat"] },
+            { key: "dietary", label: "Dietary notes", aliases: ["diet", "notes"] },
+          ]}
+        >
+          <div className="form-grid">
+            <label className="flex items-center gap-2 text-[13px] font-semibold">
+              <input type="checkbox" name="create_logins" defaultChecked /> Create logins ({inst.code}001, {inst.code}002, …)
+            </label>
+            <Field label="Starting password for new logins">
+              <input name="default_password" type="password" minLength={6} autoComplete="new-password" />
+            </Field>
+          </div>
+        </BulkImport>
+      </Panel>
     </>
   );
 }

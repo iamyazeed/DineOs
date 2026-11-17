@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { ArrowRight } from "lucide-react";
 import { requireRole } from "@/lib/auth/guards";
 import { createHall, createTables, setHallActive, updateTable } from "@/features/campus-configuration/actions";
 import { ActionForm, SubmitButton } from "@/components/forms/action-form";
@@ -21,7 +22,7 @@ export default async function HallsPage() {
         eyebrow="Configuration"
         title="Dining halls & tables"
         sub={`Any number of halls and tables. Default capacity is ${inst.default_table_capacity}; override per table where needed.`}
-        actions={<Link href="/admin/dining/tables" className="btn btn-ghost">Seat assignments →</Link>}
+        actions={<Link href="/admin/dining/tables" className="btn btn-ghost">Seat assignments <ArrowRight size={16} aria-hidden /></Link>}
       />
       <div className="mt-5" />
       {(halls ?? []).length === 0 && (

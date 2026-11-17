@@ -10,11 +10,11 @@ import type { PageProps } from "@/types/page";
 export const metadata: Metadata = { title: "Sign in" };
 
 const DEMO = [
-  ["University admin", "super@campusmeal.demo"],
-  ["Institution admin", "admin@campusmeal.demo"],
-  ["Chef", "chef@campusmeal.demo"],
-  ["Teacher", "teacher1@campusmeal.demo"],
-  ["Student", "student1@campusmeal.demo"],
+  ["Super admin", "test@superadmin"],
+  ["Institution admin", "test@instadmin"],
+  ["Chef", "test@chef"],
+  ["Teacher", "test@teacher"],
+  ["Student", "KMOIA001"],
 ];
 
 export default async function LoginPage({ searchParams }: PageProps) {
@@ -28,7 +28,7 @@ export default async function LoginPage({ searchParams }: PageProps) {
         </Link>
         <div className="panel glass fu" style={{ padding: 26 }}>
           <h1 className="font-d mb-1 text-[26px]">Welcome back</h1>
-          <p className="sub mb-5">Sign in with your institution account.</p>
+          <p className="sub mb-5">Staff sign in with email. Students use their student ID, like KMOIA001.</p>
           {!isSupabaseConfigured() ? (
             <Notice tone="warn">
               Supabase is not configured. See <Link href="/setup" className="underline">setup</Link>.
@@ -36,11 +36,11 @@ export default async function LoginPage({ searchParams }: PageProps) {
           ) : (
             <ActionForm action={signIn}>
               <input type="hidden" name="next" value={next} />
-              <Field label="Email">
-                <input name="email" type="email" autoComplete="email" required />
+              <Field label="Email or student ID">
+                <input name="email" type="text" autoComplete="username" autoCapitalize="none" spellCheck={false} required />
               </Field>
               <Field label="Password">
-                <input name="password" type="password" autoComplete="current-password" required minLength={6} />
+                <input name="password" type="password" autoComplete="current-password" required />
               </Field>
               <SubmitButton>Sign in</SubmitButton>
             </ActionForm>
@@ -55,7 +55,7 @@ export default async function LoginPage({ searchParams }: PageProps) {
                 <span className="mono">{e}</span>
               </div>
             ))}
-            <p className="mt-2">The demo password is listed in the project README.</p>
+            <p className="mt-2">Password for every demo account: <span className="mono">123</span></p>
           </div>
         </details>
       </div>

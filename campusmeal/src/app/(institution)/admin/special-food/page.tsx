@@ -14,7 +14,7 @@ export default async function AdminSpecialFood() {
       <div className="grid-stat">
         <StatCard label="Awaiting review" value={pending.length} icon="alert" tone="bad" />
         <StatCard label="Approved portions (window)" value={rows.filter((r) => r.status === "approved").reduce((a, r) => a + r.portions, 0)} icon="star" tone="good" />
-        <StatCard label="Requests (yesterday → next week)" value={rows.length} icon="file" tone="teal" />
+        <StatCard label="Requests (yesterday to next week)" value={rows.length} icon="file" tone="teal" />
       </div>
       <div className="cols-2">
         <Panel title="Pending review">

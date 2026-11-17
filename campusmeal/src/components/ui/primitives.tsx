@@ -43,7 +43,7 @@ export function StatCard({
   return (
     <div className="statc glass fu">
       {icon && (
-        <div className="ico" style={{ color, background: `color-mix(in srgb, ${color} 16%, transparent)` }}>
+        <div className="ico" style={{ color, background: "var(--glass2)", border: "1px solid var(--line)" }}>
           <Icon name={icon} size={17} />
         </div>
       )}
