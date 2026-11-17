@@ -96,6 +96,15 @@ button:disabled { cursor: not-allowed; opacity: .55; }
 .btn-danger:hover { background: color-mix(in srgb, var(--bad) 8%, transparent); }
 .btn-sm { padding: 6px 12px; font-size: 12.5px; border-radius: 10px; min-height: 34px; }
 
+/* DineOS wordmark */
+:root { --logo-ink: #ffffff; --logo-accent: #10b874; }
+:root[data-theme="light"] { --logo-ink: #0b3d2a; --logo-accent: #0fa968; }
+.logo { display: inline-flex; align-items: baseline; font-family: var(--font-inter), system-ui, sans-serif; font-weight: 800; letter-spacing: -.02em; line-height: 1; white-space: nowrap; }
+.logo-d { height: .73em; width: auto; margin-right: .04em; color: var(--logo-ink); align-self: baseline; transform: translateY(0); }
+.logo-ink { color: var(--logo-ink); }
+.logo-os { color: var(--logo-accent); }
+.brand .logo { display: flex; margin-bottom: 4px; }
+
 /* Brand mark */
 .mark { width: 34px; height: 34px; border-radius: 10px; background: var(--lime); color: #18311f; display: grid; place-items: center; flex: none; border: 1px solid var(--lime-line); }
 
