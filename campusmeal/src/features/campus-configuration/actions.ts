@@ -211,10 +211,10 @@ export async function createAccount(_: Prev, fd: FormData) {
     const ctx = await institutionActionContext("institution_admin", "students.manage");
     const d = parseForm(
       z.object({
-        email: z.string().trim().toLowerCase().email(),
+        email: z.string().trim().toLowerCase().regex(/^[^\s@]+@[^\s@]+$/, "Enter a valid email"),
         full_name: requiredText(120),
         role: z.enum(["teacher", "chef", "student"]),
-        password: z.string().min(8, "At least 8 characters"),
+        password: z.string().min(6, "At least 6 characters"),
         student_id: z.string().optional().transform((v) => v || null),
       }),
       fd,

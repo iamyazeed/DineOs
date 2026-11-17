@@ -35,7 +35,7 @@ export async function createInstitution(_: Prev, fd: FormData) {
       .single();
     check(error, "That institution code is already in use.");
     if (d.admin_email) {
-      if (!d.admin_password || d.admin_password.length < 8) throw new ActionError("Institution created. Admin password must be at least 8 characters — add the admin again.");
+      if (!d.admin_password || d.admin_password.length < 6) throw new ActionError("Institution created. Admin password must be at least 6 characters — add the admin again below.");
       const admin = createAdminClient();
       if (!admin) throw new ActionError("Institution created, but adding an admin login needs SUPABASE_SERVICE_ROLE_KEY on the server.");
       const { data: u, error: uErr } = await admin.auth.admin.createUser({

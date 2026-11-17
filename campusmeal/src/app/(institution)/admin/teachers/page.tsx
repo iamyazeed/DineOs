@@ -1,7 +1,10 @@
 import Link from "next/link";
+import { ArrowLeft } from "lucide-react";
 import { requireRole } from "@/lib/auth/guards";
 import { createAccount } from "@/features/campus-configuration/actions";
+import { bulkCreateStaff } from "@/features/people/actions";
 import { ActionForm, SubmitButton } from "@/components/forms/action-form";
+import { BulkImport } from "@/components/forms/bulk-import";
 import { EmptyState, Field, PageHeader, Panel, Pill } from "@/components/ui/primitives";
 import { ROLE_LABEL } from "@/lib/constants";
 import type { Role } from "@/types/domain";
@@ -16,7 +19,7 @@ export default async function TeachersPage() {
   const classesOf = (uid: string) => (classes ?? []).filter((c) => c.teacher_id === uid).map((c) => c.name);
   return (
     <>
-      <PageHeader eyebrow="People" title="Teachers & staff" sub="Staff with CampusMeal logins at this institution" actions={<Link href="/admin/students" className="btn btn-ghost">← Students</Link>} />
+      <PageHeader eyebrow="People" title="Teachers & staff" sub="Staff with DineOS logins at this institution" actions={<Link href="/admin/students" className="btn btn-ghost"><ArrowLeft size={16} aria-hidden /> Students</Link>} />
       <div className="mt-5" />
       <div className="cols">
         <Panel title="Staff">
@@ -56,7 +59,7 @@ export default async function TeachersPage() {
             Assign class teachers on the <Link href="/admin/classes" className="underline">Classes</Link> page.
           </p>
         </Panel>
-        <Panel title="Add a teacher or chef" sub="Creates a login with a temporary password">
+        <Panel title="Add a teacher or chef" sub="Creates a login with a starting password">
           <ActionForm action={createAccount} resetOnSuccess>
             <Field label="Role">
               <select name="role" defaultValue="teacher">
@@ -68,10 +71,10 @@ export default async function TeachersPage() {
               <input name="full_name" required maxLength={120} />
             </Field>
             <Field label="Email">
-              <input name="email" type="email" required />
+              <input name="email" type="text" inputMode="email" autoCapitalize="none" required />
             </Field>
             <Field label="Temporary password">
-              <input name="password" type="password" minLength={8} required autoComplete="new-password" />
+              <input name="password" type="password" minLength={6} required autoComplete="new-password" />
             </Field>
             <div>
               <SubmitButton>Create login</SubmitButton>
@@ -79,6 +82,24 @@ export default async function TeachersPage() {
           </ActionForm>
         </Panel>
       </div>
+      <Panel title="Add teachers and chefs in bulk" sub="Paste rows or upload a CSV">
+        <BulkImport
+          action={bulkCreateStaff}
+          fileName="staff.csv"
+          submitLabel="Add staff"
+          sample={"name,email,role,password\nUsman,usman@kmoia.edu,teacher,\nBilal,bilal@kmoia.edu,chef,"}
+          columns={[
+            { key: "name", label: "Name", required: true, aliases: ["full name"] },
+            { key: "email", label: "Email", required: true },
+            { key: "role", label: "Role (teacher / chef)", required: true, aliases: ["role", "type"] },
+            { key: "password", label: "Password" },
+          ]}
+        >
+          <Field label="Password for rows that leave it blank">
+            <input name="default_password" type="password" minLength={6} autoComplete="new-password" />
+          </Field>
+        </BulkImport>
+      </Panel>
     </>
   );
 }
