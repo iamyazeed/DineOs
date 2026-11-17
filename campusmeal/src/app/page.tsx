@@ -73,7 +73,7 @@ export default async function Home() {
         </section>
 
         <section>
-          <div className="eyebrow mb-2">Who it's for</div>
+          <div className="eyebrow mb-2">Who it&apos;s for</div>
           <h2 className="font-d mb-6 text-[26px]">Choose where to start</h2>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {ROLES.map(({ role, text, icon: I, Art }) => (
@@ -141,8 +141,8 @@ export default async function Home() {
         <footer className="site-footer">
           <div className="footer-cta">
             <div>
-              <div className="text-[18px] font-bold">Ready for tomorrow's lunch?</div>
-              <p className="text-[13.5px]">Sign in with your campus account to see today's numbers.</p>
+              <div className="text-[18px] font-bold">Ready for tomorrow&apos;s lunch?</div>
+              <p className="text-[13.5px]">Sign in with your campus account to see today&apos;s numbers.</p>
             </div>
             <Link href="/login" className="btn btn-teal">
               Sign in <ArrowRight size={16} aria-hidden />
