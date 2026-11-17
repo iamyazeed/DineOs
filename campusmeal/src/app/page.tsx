@@ -144,9 +144,19 @@ export default async function Home() {
               <div className="text-[18px] font-bold">Ready for tomorrow&apos;s lunch?</div>
               <p className="text-[13.5px]">Sign in with your campus account to see today&apos;s numbers.</p>
             </div>
-            <Link href="/login" className="btn btn-teal">
-              Sign in <ArrowRight size={16} aria-hidden />
-            </Link>
+            <div className="flex flex-wrap gap-2">
+              <a
+                href={`https://wa.me/${process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? ""}?text=${encodeURIComponent("Hi! We'd like to add our campus to DineOS.")}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn"
+              >
+                Add your campus on WhatsApp
+              </a>
+              <Link href="/login" className="btn btn-teal">
+                Sign in <ArrowRight size={16} aria-hidden />
+              </Link>
+            </div>
           </div>
           <div className="mt-8 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
             <div>
