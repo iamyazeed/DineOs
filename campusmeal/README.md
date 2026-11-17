@@ -5,7 +5,7 @@ Multi-tenant campus canteen platform (Next.js 16 App Router · TypeScript · Tai
 ## Setup
 1. Create a Supabase project.
 2. Run the SQL files in `supabase/migrations/` **in order** (SQL editor, or `supabase db push`).
-3. For the demo, run `supabase/seed.sql` (creates the demo accounts; it uses `session_replication_role`, so run it as `postgres`).
+3. For the demo, run `supabase/seed.sql`. If you seeded before Nov 2026 and demo logins fail, run `supabase/fix_demo_logins.sql` once (creates the demo accounts; it uses `session_replication_role`, so run it as `postgres`).
 4. Copy `.env.example` to `.env.local` and fill in:
    - `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`
    - `SUPABASE_SERVICE_ROLE_KEY` (server only; needed only for creating logins)

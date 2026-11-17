@@ -17,7 +17,10 @@ export function studentLoginEmail(loginId: string): string {
  */
 export function identifierToEmail(identifier: string): string {
   const v = identifier.trim();
-  return v.includes("@") ? v.toLowerCase() : studentLoginEmail(v);
+  if (!v.includes("@")) return studentLoginEmail(v);
+  const email = v.toLowerCase();
+  // Demo staff sign in as "test@chef"; Supabase Auth needs a dotted domain, so they are stored as test@chef.demo.
+  return email.split("@")[1]?.includes(".") ? email : `${email}.demo`;
 }
 
 /** Shown in tables: "Abu - 001". */

@@ -33,7 +33,8 @@ describe("login ids", () => {
   it("builds and resolves student IDs", () => {
     expect(studentLoginId("kmoia", 7)).toBe("KMOIA007");
     expect(identifierToEmail(" KMOIA007 ")).toBe("kmoia007@students.dineos");
-    expect(identifierToEmail("Test@Chef")).toBe("test@chef");
+    expect(identifierToEmail("Test@Chef")).toBe("test@chef.demo");
+    expect(identifierToEmail("a@b.com")).toBe("a@b.com");
     expect(numberedName("Abu", 1)).toBe("Abu - 001");
   });
 });

@@ -278,9 +278,24 @@ path.il-s:not([class*="il-paper"]):not([class*="il-lime"]) { fill: none; }
 details.disclosure > summary { list-style: none; cursor: pointer; }
 details.disclosure > summary::-webkit-details-marker { display: none; }
 
-/* Kept as a no-op so existing markup still works; entrance animations removed. */
-.fu { }
-@media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto !important; transition: none !important; } }
+/* Skeleton shimmer */
+.sk { border-radius: 8px; background: linear-gradient(90deg, var(--glass2) 25%, color-mix(in srgb, var(--lime) 14%, var(--glass2)) 50%, var(--glass2) 75%); background-size: 200% 100%; animation: sk-shimmer 1.3s ease-in-out infinite; }
+@keyframes sk-shimmer { from { background-position: 200% 0; } to { background-position: -200% 0; } }
+
+/* Entrance: pages, panels and cards rise in gently */
+@keyframes rise-in { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+.fu, .pagewrap > *, .feature-card, .step-card, .stat { animation: rise-in .45s cubic-bezier(.2,.7,.3,1) both; }
+.pagewrap > *:nth-child(2) { animation-delay: .05s; } .pagewrap > *:nth-child(3) { animation-delay: .1s; } .pagewrap > *:nth-child(4) { animation-delay: .15s; }
+.grid-stat > * { animation: rise-in .45s cubic-bezier(.2,.7,.3,1) both; }
+.grid-stat > *:nth-child(2) { animation-delay: .06s; } .grid-stat > *:nth-child(3) { animation-delay: .12s; } .grid-stat > *:nth-child(4) { animation-delay: .18s; }
+.step-card:nth-child(2), .feature-card:nth-child(2) { animation-delay: .08s; } .step-card:nth-child(3), .feature-card:nth-child(3) { animation-delay: .16s; } .step-card:nth-child(4), .feature-card:nth-child(4) { animation-delay: .24s; }
+.panel, .statc, .tile { transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease; }
+.statc:hover, .tile:hover { transform: translateY(-2px); }
+.btn { transition: background .15s, border-color .15s, color .15s, transform .12s; }
+.btn:active { transform: scale(.97); }
+.il-hero .il-blob { animation: float 6s ease-in-out infinite alternate; transform-box: fill-box; transform-origin: center; }
+@keyframes float { from { transform: translateY(0) scale(1); } to { transform: translateY(-8px) scale(1.04); } }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; scroll-behavior: auto !important; transition: none !important; } }
 
 /* Responsive */
 html, body { max-width: 100%; }

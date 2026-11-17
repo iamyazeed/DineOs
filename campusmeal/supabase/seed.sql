@@ -41,20 +41,21 @@ declare
 begin
   -- Staff accounts --------------------------------------------------------------
   for u in select * from (values
-    (v_super,   'test@superadmin', 'Super Admin'),
-    (v_admin,   'test@instadmin',  'Institution Admin'),
-    (v_chef,    'test@chef',       'Chef'),
-    (v_teacher, 'test@teacher',    'Teacher')
+    (v_super,   'test@superadmin.demo', 'Super Admin'),
+    (v_admin,   'test@instadmin.demo',  'Institution Admin'),
+    (v_chef,    'test@chef.demo',       'Chef'),
+    (v_teacher, 'test@teacher.demo',    'Teacher')
   ) as x(id, email, name)
   loop
     insert into auth.users (instance_id, id, aud, role, email, encrypted_password, email_confirmed_at,
       raw_app_meta_data, raw_user_meta_data, created_at, updated_at,
-      confirmation_token, recovery_token, email_change_token_new, email_change)
+      confirmation_token, recovery_token, email_change_token_new, email_change,
+        email_change_token_current, phone_change, phone_change_token, reauthentication_token)
     values ('00000000-0000-0000-0000-000000000000', u.id, 'authenticated', 'authenticated', u.email, v_pw, now(),
-      '{"provider":"email","providers":["email"]}', jsonb_build_object('full_name', u.name), now(), now(), '', '', '', '')
+      '{"provider":"email","providers":["email"]}', jsonb_build_object('full_name', u.name), now(), now(), '', '', '', '', '', '', '', '')
     on conflict (id) do nothing;
     insert into auth.identities (id, provider_id, user_id, identity_data, provider, last_sign_in_at, created_at, updated_at)
-    values (gen_random_uuid(), u.id::text, u.id, jsonb_build_object('sub', u.id::text, 'email', u.email), 'email', now(), now(), now())
+    values (gen_random_uuid(), u.id::text, u.id, jsonb_build_object('sub', u.id::text, 'email', u.email, 'email_verified', true), 'email', now(), now(), now())
     on conflict do nothing;
     insert into public.profiles (id, full_name, email) values (u.id, u.name, u.email)
     on conflict (id) do update set full_name = excluded.full_name;
@@ -92,13 +93,14 @@ begin
       v_uid := ('a1000000-0000-0000-0000-' || lpad(n::text, 12, '0'))::uuid;
       insert into auth.users (instance_id, id, aud, role, email, encrypted_password, email_confirmed_at,
         raw_app_meta_data, raw_user_meta_data, created_at, updated_at,
-        confirmation_token, recovery_token, email_change_token_new, email_change)
+        confirmation_token, recovery_token, email_change_token_new, email_change,
+        email_change_token_current, phone_change, phone_change_token, reauthentication_token)
       values ('00000000-0000-0000-0000-000000000000', v_uid, 'authenticated', 'authenticated', lower(v_login) || '@students.dineos', v_pw, now(),
         '{"provider":"email","providers":["email"]}',
-        jsonb_build_object('full_name', names[1 + (n - 1) % array_length(names, 1)] || ' - ' || lpad(n::text, 3, '0')), now(), now(), '', '', '', '')
+        jsonb_build_object('full_name', names[1 + (n - 1) % array_length(names, 1)] || ' - ' || lpad(n::text, 3, '0')), now(), now(), '', '', '', '', '', '', '', '')
       on conflict (id) do nothing;
       insert into auth.identities (id, provider_id, user_id, identity_data, provider, last_sign_in_at, created_at, updated_at)
-      values (gen_random_uuid(), v_uid::text, v_uid, jsonb_build_object('sub', v_uid::text, 'email', lower(v_login) || '@students.dineos'), 'email', now(), now(), now())
+      values (gen_random_uuid(), v_uid::text, v_uid, jsonb_build_object('sub', v_uid::text, 'email', lower(v_login) || '@students.dineos', 'email_verified', true), 'email', now(), now(), now())
       on conflict do nothing;
       insert into public.profiles (id, full_name, email)
       values (v_uid, names[1 + (n - 1) % array_length(names, 1)] || ' - ' || lpad(n::text, 3, '0'), lower(v_login) || '@students.dineos')
