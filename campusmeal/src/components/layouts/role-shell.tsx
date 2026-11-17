@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 import { NAVIGATION } from "@/config/navigation";
 import { ROLE_LABEL } from "@/lib/constants";
 import { initials } from "@/lib/utils";
+import { Utensils } from "lucide-react";
 import { Icon } from "@/components/ui/icon";
 import { SidebarNav } from "@/components/layouts/sidebar-nav";
 import { ThemeToggle } from "@/components/layouts/theme-toggle";
@@ -12,14 +13,11 @@ export function Brand({ sub }: { sub?: string }) {
   return (
     <div className="brand">
       <span className="mark" aria-hidden>
-        <i />
-        <i />
-        <i />
-        <i />
+        <Utensils size={18} strokeWidth={2.2} />
       </span>
       <div>
         DineOS
-        <small>{sub ?? "Campus dining ops"}</small>
+        <small>{sub ?? "Campus dining"}</small>
       </div>
     </div>
   );
