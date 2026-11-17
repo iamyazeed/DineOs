@@ -18,7 +18,7 @@ export function Brand({ sub }: { sub?: string }) {
         <i />
       </span>
       <div>
-        CampusMeal
+        DineOS
         <small>{sub ?? "Campus dining ops"}</small>
       </div>
     </div>

@@ -8,7 +8,7 @@ const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 const jetbrains = JetBrains_Mono({ subsets: ["latin"], weight: ["500", "700"], variable: "--font-jetbrains" });
 
 export const metadata: Metadata = {
-  title: { default: "CampusMeal — Intelligent Campus Dining Operations", template: "%s · CampusMeal" },
+  title: { default: "DineOS — Intelligent Campus Dining Operations", template: "%s · DineOS" },
   description: "Campus canteen operations: meal planning, attendance, kitchen preparation and table-wise distribution.",
 };
 

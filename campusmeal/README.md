@@ -1,4 +1,4 @@
-# CampusMeal — Intelligent Campus Dining Operations
+# DineOS — Intelligent Campus Dining Operations
 
 Multi-tenant campus canteen platform (Next.js 16 App Router · TypeScript · Tailwind v4 · Supabase Postgres/Auth/RLS/Storage). Visual design ported from the Stackline prototype (amber/teal glass, Bricolage Grotesque / Inter / JetBrains Mono, dark + light).
 

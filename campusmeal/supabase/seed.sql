@@ -1,4 +1,4 @@
--- CampusMeal DEMONSTRATION DATA (sample only — not real operational metrics).
+-- DineOS DEMONSTRATION DATA (sample only — not real operational metrics).
 -- Creates one demo institution (is_demo = true) with 2 halls, 21 tables,
 -- 5 classes x 40 students, staff accounts, a timetable and ~3 weeks of sample activity.
 -- Demo password for every account: CampusMeal#2026
@@ -216,7 +216,7 @@ begin
     (v_inst, 'gas', 'Gas cylinder refill for Dinner', 'Two cylinders remaining (sample).', 'urgent', 'approved', 'a0000000-0000-0000-0000-000000000003');
 
   insert into announcements (institution_id, title, body, kind, audience, created_by) values
-    (v_inst, 'Welcome to CampusMeal', 'Cancel meals you will skip before 8 PM the previous day so the kitchen can plan accurately. (sample)', 'general', '{student,teacher,chef}', 'a0000000-0000-0000-0000-000000000002'),
+    (v_inst, 'Welcome to DineOS', 'Cancel meals you will skip before 8 PM the previous day so the kitchen can plan accurately. (sample)', 'general', '{student,teacher,chef}', 'a0000000-0000-0000-0000-000000000002'),
     (v_inst, 'Sponsored lunch earlier this week', 'Lunch was sponsored by the Alumni Association; the regular lunch was not prepared. (sample)', 'sponsored', '{student,teacher,chef}', 'a0000000-0000-0000-0000-000000000002');
 
   insert into institutional_messages (institution_id, direction, subject, body, sender_id) values

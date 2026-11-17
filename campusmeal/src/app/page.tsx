@@ -36,7 +36,7 @@ export default async function Home() {
         <div className="eyebrow mb-4">Intelligent Campus Dining Operations</div>
         <h1 className="font-d max-w-3xl text-[40px] md:text-[60px]">The right meals, to the right people, at the right time.</h1>
         <p className="sub mt-5 max-w-2xl text-[16px]">
-          CampusMeal connects student meal decisions, teacher coordination, kitchen preparation and institutional monitoring in one multi-tenant platform —
+          DineOS connects student meal decisions, teacher coordination, kitchen preparation and institutional monitoring in one multi-tenant platform —
           so campuses cook what is actually needed.
         </p>
         <div className="mt-8 flex flex-wrap gap-3">

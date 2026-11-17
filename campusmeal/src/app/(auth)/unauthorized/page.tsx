@@ -10,7 +10,7 @@ export default async function Unauthorized() {
       <div className="panel glass fu max-w-md text-center" style={{ padding: 30 }}>
         <div className="eyebrow mb-2">Access denied</div>
         <h1 className="font-d mb-2 text-[26px]">You don&apos;t have access to that area</h1>
-        <p className="sub mb-5">Each CampusMeal workspace is limited to its role and institution.</p>
+        <p className="sub mb-5">Each DineOS workspace is limited to its role and institution.</p>
         <div className="flex flex-wrap justify-center gap-2">
           {session?.memberships.map((m) => (
             <Link key={m.role} href={ROLE_HOME[m.role]} className="btn btn-primary">
