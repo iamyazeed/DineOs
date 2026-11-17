@@ -38,3 +38,16 @@ describe("login ids", () => {
     expect(numberedName("Abu", 1)).toBe("Abu - 001");
   });
 });
+
+describe("demo sign-in", async () => {
+  const { findDemoUser, demoToken, readDemoToken } = await import("@/lib/auth/demo");
+  it("finds demo accounts and round-trips the signed cookie", async () => {
+    expect(findDemoUser("Test@Chef")?.role).toBe("chef");
+    expect(findDemoUser("test@superadmin.demo")?.role).toBe("super_admin");
+    expect(findDemoUser("KMOIA001")?.userId).toBe("a1000000-0000-0000-0000-000000000001");
+    expect(findDemoUser("KMOIA241")).toBeNull();
+    const t = await demoToken("test@teacher");
+    expect((await readDemoToken(t))?.role).toBe("teacher");
+    expect(await readDemoToken(t.replace("teacher", "superadmin"))).toBeNull();
+  });
+});
