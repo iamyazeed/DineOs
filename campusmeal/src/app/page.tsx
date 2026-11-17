@@ -48,7 +48,7 @@ export default async function Home() {
           </a>
         </div>
       </section>
-      <section id="how" className="grid gap-4 md:grid-cols-3">
+      <section id="how" className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {FLOW.map((f, i) => (
           <div key={f.title} className="panel glass fu" style={{ animationDelay: `${i * 60}ms` }}>
             <div className="mb-3 flex items-center gap-3">

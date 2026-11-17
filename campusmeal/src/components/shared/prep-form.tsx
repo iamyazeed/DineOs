@@ -32,7 +32,7 @@ export function PrepCard({ meal, regular, separate }: { meal: DayMeal; regular: 
       <ProgressBar value={p?.progress ?? 0} bad={p?.status === "delayed"} />
       <ActionForm action={updatePreparation} className="mt-3">
         <input type="hidden" name="meal_id" value={meal.id} />
-        <div className="grid grid-cols-2 gap-2">
+        <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
           <Field label="Status">
             <select name="status" defaultValue={p?.status ?? "not_started"}>
               <option value="not_started">Not Started</option>
@@ -47,7 +47,7 @@ export function PrepCard({ meal, regular, separate }: { meal: DayMeal; regular: 
         </div>
         <details className="disclosure">
           <summary className="text-[12px] font-semibold text-amber">Report a delay</summary>
-          <div className="mt-2 grid grid-cols-[100px_1fr] gap-2">
+          <div className="mt-2 grid grid-cols-1 sm:grid-cols-[100px_1fr] gap-2">
             <Field label="Minutes">
               <input name="delay_minutes" type="number" min={1} max={600} defaultValue={p?.delay_minutes ?? ""} />
             </Field>

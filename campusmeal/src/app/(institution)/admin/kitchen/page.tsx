@@ -27,7 +27,7 @@ export default async function KitchenMonitoring() {
         {meals.length === 0 ? (
           <EmptyState>No meals today.</EmptyState>
         ) : (
-          <div className="grid gap-3 md:grid-cols-3">
+          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {meals.map((m, i) => (
               <div key={m.id} className="glass rounded-[14px] p-4">
                 <div className="flex items-center justify-between">

@@ -33,7 +33,7 @@ export default async function ChefOverview() {
         {meals.length === 0 ? (
           <EmptyState>No meals today.</EmptyState>
         ) : (
-          <div className="grid gap-3 md:grid-cols-3">
+          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {meals.map((m, i) => (
               <PrepCard key={m.id} meal={m} regular={breakdowns[i].regular} separate={breakdowns[i].separatePortions} />
             ))}
