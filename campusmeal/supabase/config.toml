@@ -1,0 +1,23 @@
+project_id = "campusmeal"
+
+[api]
+port = 54321
+schemas = ["public", "storage"]
+
+[db]
+port = 54322
+major_version = 15
+
+[db.seed]
+enabled = true
+sql_paths = ["./seed.sql"]
+
+[auth]
+site_url = "http://localhost:3000"
+enable_signup = false
+
+[auth.email]
+enable_confirmations = false
+
+[storage]
+file_size_limit = "10MiB"
