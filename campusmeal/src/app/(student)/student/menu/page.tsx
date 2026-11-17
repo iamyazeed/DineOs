@@ -12,7 +12,7 @@ export default async function TodaysMenu() {
   return (
     <>
       <PageHeader eyebrow={fmtDate(today, { weekday: "long", day: "numeric", month: "long" })} title="Today's menu" sub="Published by your institution." />
-      <div className="mt-5 grid gap-4 md:grid-cols-3">
+      <div className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {meals.length === 0 && (
           <Panel>
             <EmptyState>No meals today.</EmptyState>

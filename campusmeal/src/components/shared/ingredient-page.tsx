@@ -70,7 +70,7 @@ export async function IngredientPage({ db, instId, kind }: { db: SupabaseClient;
                 ))}
               </datalist>
             </Field>
-            <div className="grid grid-cols-2 gap-2">
+            <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
               <Field label={usage ? "Quantity used" : "Quantity needed"}>
                 <input name="quantity" type="number" min={0.01} step={0.01} required />
               </Field>

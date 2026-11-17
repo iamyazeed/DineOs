@@ -21,7 +21,7 @@ export default async function Preparation() {
           {sets[di].length === 0 ? (
             <EmptyState>No meals.</EmptyState>
           ) : (
-            <div className="grid gap-3 md:grid-cols-3">
+            <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
               {sets[di].map((m, i) => (
                 <PrepCard key={m.id} meal={m} regular={counts[di][i].regular} separate={counts[di][i].separatePortions} />
               ))}

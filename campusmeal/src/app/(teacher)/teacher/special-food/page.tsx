@@ -64,7 +64,7 @@ export default async function TeacherSpecialFood({ searchParams }: PageProps) {
                   </label>
                 ))}
               </div>
-              <div className="grid grid-cols-[110px_1fr] gap-2">
+              <div className="grid grid-cols-1 sm:grid-cols-[110px_1fr] gap-2">
                 <Field label="Portions">
                   <input name="portions" type="number" min={1} max={500} required defaultValue={1} />
                 </Field>

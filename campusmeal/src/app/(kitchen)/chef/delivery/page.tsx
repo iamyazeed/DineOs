@@ -44,7 +44,7 @@ export default async function ChefDelivery({ searchParams }: PageProps) {
                 <ActionForm action={updateDelivery}>
                   <input type="hidden" name="meal_id" value={selected.id} />
                   <input type="hidden" name="hall_id" value={h.key} />
-                  <div className="grid grid-cols-2 gap-2">
+                  <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
                     <Field label="Food delivery">
                       <select name="delivery_status" defaultValue={d?.delivery_status ?? "pending"}>
                         <option value="pending">Pending</option>
