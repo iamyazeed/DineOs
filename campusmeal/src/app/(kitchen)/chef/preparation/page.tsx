@@ -14,7 +14,7 @@ export default async function Preparation() {
   const counts = await Promise.all(sets.map((ms) => Promise.all(ms.map((m) => getMealBreakdown(db, inst, m)))));
   return (
     <>
-      <PageHeader eyebrow="Kitchen" title="Preparation progress" sub="Not Started → In Progress → Completed. Report Delayed only when a real delay occurs. The institution admin sees these updates live." />
+      <PageHeader eyebrow="Kitchen" title="Preparation progress" sub="Move each item from Not started to In progress to Completed. Report Delayed only when a real delay occurs. The institution admin sees these updates live." />
       <div className="mt-5" />
       {days.map((d, di) => (
         <Panel key={d} title={di === 0 ? "Today" : fmtDate(d, { weekday: "long", day: "numeric", month: "short" })}>
